@@ -4,4 +4,4 @@ const config = {
   webDir: 'dist'
 };
 
-module.exports = config;
+export default config;
