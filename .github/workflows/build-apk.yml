@@ -24,16 +24,19 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-
-    - name: Build Web Assets & APK
+    - name: Prepare Web Directory & Build APK
       run: |
+        mkdir www
+        cp index.html www/ 2>/dev/null || true
+        cp -r *.css *.js www/ 2>/dev/null || true
+        cp -r *.png *.jpg *.jpeg *.json www/ 2>/dev/null || true
+        
         npm init -y
         npm install @capacitor/core @capacitor/cli @capacitor/android
-        npx cap init AnimeVerse com.animeverse.app --web-dir .
+        npx cap init AnimeVerse com.animeverse.app --web-dir www
         npx cap add android
         npx cap sync android
+        
         cd android
         chmod +x gradlew
         ./gradlew assembleDebug
